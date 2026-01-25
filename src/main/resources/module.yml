@@ -1,0 +1,12 @@
+name: Red Alert
+id: red_alert
+version: 1.0.0
+type: MICROGAME
+api-version: 1.0
+main: net.blueva.arcade.modules.redalert.RedAlertModule
+
+authors:
+  - Blueva
+  - Whiron
+
+description: "Red Alert minigame - survive as the floor heats up beneath you."
