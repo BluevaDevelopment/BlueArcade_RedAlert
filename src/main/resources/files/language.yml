@@ -34,6 +34,11 @@ vote_menu:
     - "<white>{votes}</white> <gray>votes.</gray>"
 
 stats:
+
+  descriptions:
+    wins: "Red Alert wins"
+    games_played: "Red Alert games played"
+    tiles_melted: "Blocks heated or removed"
   labels:
     tiles_melted: "Tiles melted"
     games_played: "Red Alert games played"

@@ -38,6 +38,11 @@ public class RedAlertListener implements Listener {
             return;
         }
 
+        // Spectators should not trigger block physics
+        if (player.getGameMode() == org.bukkit.GameMode.SPECTATOR) {
+            return;
+        }
+
         Location to = event.getTo();
         if (to == null) {
             return;

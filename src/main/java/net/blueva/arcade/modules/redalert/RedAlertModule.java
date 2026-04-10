@@ -61,7 +61,7 @@ public class RedAlertModule implements GameModule<Player, Location, World, Mater
         RedAlertSettings settings = new RedAlertSettings();
         settings.load(moduleConfig);
 
-        RedAlertStatsService statsService = new RedAlertStatsService(statsAPI, moduleInfo);
+        RedAlertStatsService statsService = new RedAlertStatsService(statsAPI, moduleInfo, moduleConfig);
         statsService.registerStats();
 
         RedAlertLoadoutService loadoutService = new RedAlertLoadoutService(moduleConfig);

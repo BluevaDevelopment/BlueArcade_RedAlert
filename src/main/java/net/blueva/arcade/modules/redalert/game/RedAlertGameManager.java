@@ -215,6 +215,11 @@ public class RedAlertGameManager {
             return;
         }
 
+        // Don't eliminate spectators
+        if (context.getSpectators().contains(player)) {
+            return;
+        }
+
         int arenaId = context.getArenaId();
         RedAlertArenaState state = arenaStates.get(arenaId);
         if (state == null) {
