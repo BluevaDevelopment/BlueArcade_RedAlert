@@ -1,10 +1,16 @@
-# Red Alert Module Settings
+#  ____  _               _                      _
+# | __ )| |_   _  ___   / \   _ __ ___ __ _  __| | ___
+# |  _ \| | | | |/ _ \ / _ \ | '__/ __/ _` |/ _` |/ _ \
+# | |_) | | |_| |  __// ___ \| | | (_| (_| | (_| |  __/
+# |____/|_|\__,_|\___/_/   \_|_|  \___\__,_|\__,_|\___|
+#
+# [!] Arcade by Blueva | https://blueva.net/store/blue-arcade [!]
 
-file_version: 1
+# Red Alert Module Settings
 # Visual representation in menus
 menus:
   vote:
-    item: RED_CONCRETE
+    item: "RED_CONCRETE"
 
 gameplay:
   # How far below the lowest floor a player must fall to be eliminated
@@ -39,13 +45,13 @@ trail_mode:
 
 blocks:
   stages:
-    safe: WHITE_CONCRETE
-    warn: YELLOW_CONCRETE
-    danger: ORANGE_CONCRETE
-    critical: RED_CONCRETE
+    safe: "WHITE_CONCRETE"
+    warn: "YELLOW_CONCRETE"
+    danger: "ORANGE_CONCRETE"
+    critical: "RED_CONCRETE"
   particles:
     enabled: true
-    type: FLAME
+    type: "FLAME"
     # Number of particles to spawn when a block disappears
     count: 12
     # Horizontal spread for decay particles

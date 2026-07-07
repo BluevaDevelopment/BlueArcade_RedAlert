@@ -12,8 +12,10 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -39,7 +41,7 @@ public class RedAlertListener implements Listener {
         }
 
         // Spectators should not trigger block physics
-        if (player.getGameMode() == org.bukkit.GameMode.SPECTATOR) {
+        if (context.isPlayerSpectating(player)) {
             return;
         }
 
@@ -71,6 +73,28 @@ public class RedAlertListener implements Listener {
         if (hasChangedBlock(event)) {
             gameManager.handlePlayerStep(player, to);
         }
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onPlayerFallDamage(EntityDamageEvent event) {
+        if (!(event.getEntity() instanceof Player player)) {
+            return;
+        }
+
+        if (event.getCause() != EntityDamageEvent.DamageCause.FALL) {
+            return;
+        }
+
+        GameContext<Player, Location, World, Material, ItemStack, Sound, Block, Entity> context = gameManager.getGameContext(player);
+        if (context == null) {
+            return;
+        }
+
+        if (!context.isPlayerPlaying(player)) {
+            return;
+        }
+
+        event.setCancelled(true);
     }
 
     @EventHandler

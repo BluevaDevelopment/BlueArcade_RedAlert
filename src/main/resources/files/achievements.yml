@@ -1,10 +1,17 @@
-file_version: 1
+#  ____  _               _                      _
+# | __ )| |_   _  ___   / \   _ __ ___ __ _  __| | ___
+# |  _ \| | | | |/ _ \ / _ \ | '__/ __/ _` |/ _` |/ _ \
+# | |_) | | |_| |  __// ___ \| | | (_| (_| | (_| |  __/
+# |____/|_|\__,_|\___/_/   \_|_|  \___\__,_|\__,_|\___|
+#
+# [!] Arcade by Blueva | https://blueva.net/store/blue-arcade [!]
+
 category:
-  id: red_alert
+  id: "red_alert"
   name: "Red Alert"
   description:
     - "Achievements tied to Red Alert."
-  icon: RED_CONCRETE
+  icon: "RED_CONCRETE"
   sort_order: 25
 
 achievements:
@@ -12,7 +19,7 @@ achievements:
     name: "Alarm Rookie"
     description:
       - "Play Red Alert matches."
-    icon: REDSTONE_TORCH
+    icon: "REDSTONE_TORCH"
     phases:
       1:
         name: "First alarm"
@@ -84,7 +91,7 @@ achievements:
     name: "Circuit Melter"
     description:
       - "Overheat floor tiles."
-    icon: BLAZE_POWDER
+    icon: "BLAZE_POWDER"
     phases:
       1:
         name: "Sparks"
@@ -156,7 +163,7 @@ achievements:
     name: "Siren Champion"
     description:
       - "Win Red Alert matches."
-    icon: DIAMOND
+    icon: "DIAMOND"
     phases:
       1:
         name: "First victory"
@@ -228,7 +235,7 @@ achievements:
     name: "Thermal Specialist"
     description:
       - "Melt tiles across many games."
-    icon: MAGMA_BLOCK
+    icon: "MAGMA_BLOCK"
     phases:
       1:
         name: "Heat paths"
@@ -300,7 +307,7 @@ achievements:
     name: "Steady Signal"
     description:
       - "Keep playing and keep winning."
-    icon: BEACON
+    icon: "BEACON"
     phases:
       1:
         name: "Calm ping"

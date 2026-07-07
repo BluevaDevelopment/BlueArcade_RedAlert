@@ -32,6 +32,11 @@ import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Map;
+import net.blueva.arcade.api.setup.ModuleSetupCommand;
+import net.blueva.arcade.api.setup.ModuleSetupMetadata;
+import net.blueva.arcade.api.setup.ModuleSetupStep;
+import net.blueva.arcade.api.setup.ModuleSetupStatusCheck;
+import java.util.List;
 
 public class RedAlertModule implements GameModule<Player, Location, World, Material, ItemStack, Sound, Block, Entity, Listener, EventPriority> {
 
@@ -54,9 +59,8 @@ public class RedAlertModule implements GameModule<Player, Location, World, Mater
         VoteMenuAPI voteMenu = ModuleAPI.getVoteMenuAPI();
         AchievementsAPI achievementsAPI = ModuleAPI.getAchievementsAPI();
 
-        moduleConfig.register("language.yml", 1);
-        moduleConfig.register("settings.yml", 1);
-        moduleConfig.register("achievements.yml", 1);
+        moduleConfig.register("settings.yml");
+        moduleConfig.register("achievements.yml");
 
         RedAlertSettings settings = new RedAlertSettings();
         settings.load(moduleConfig);
@@ -82,8 +86,8 @@ public class RedAlertModule implements GameModule<Player, Location, World, Mater
             voteMenu.registerGame(
                     moduleInfo.getId(),
                     Material.valueOf(moduleConfig.getString("menus.vote.item")),
-                    moduleConfig.getStringFrom("language.yml", "vote_menu.name"),
-                    moduleConfig.getStringListFrom("language.yml", "vote_menu.lore")
+                    moduleConfig.getTranslation(null, "vote_menu.name"),
+                    moduleConfig.getTranslationList(null, "vote_menu.lore")
             );
         }
     }
@@ -134,4 +138,41 @@ public class RedAlertModule implements GameModule<Player, Location, World, Mater
     public Map<String, String> getCustomPlaceholders(Player player) {
         return gameManager.getCustomPlaceholders(player);
     }
+
+
+    @Override
+    public boolean requiresSpawnCapacityValidation() {
+        return false;
+    }
+
+    @Override
+    public ModuleSetupMetadata getSetupMetadata() {
+        return new ModuleSetupMetadata() {
+
+            @Override
+            public List<ModuleSetupStep> getSetupSteps() {
+                return List.of(
+                        new ModuleSetupStep("floor", true, "Configure Floor", "Configure the module-specific floor setup data.", List.of("/baa game <arena> red_alert floor"), "selection region"),
+                        new ModuleSetupStep("setmode", true, "Configure Setmode", "Configure the module-specific setmode setup data.", List.of("/baa game <arena> red_alert setmode"), "mode")
+                );
+            }
+
+            @Override
+            public List<ModuleSetupCommand> getSetupCommands() {
+                return List.of(
+                        new ModuleSetupCommand("floor", "/baa game <arena> red_alert floor", "Configure floor setup data.", true),
+                        new ModuleSetupCommand("setmode", "/baa game <arena> red_alert setmode", "Configure setmode setup data.", true)
+                );
+            }
+
+            @Override
+            public List<ModuleSetupStatusCheck<?, ?, ?>> getStatusChecks() {
+                return List.of(
+                        new ModuleSetupStatusCheck<>("floor", true, "Select the floor region.", context -> context.getData().has("game.floor.bounds.min.x") && context.getData().has("game.floor.bounds.max.x")),
+                        new ModuleSetupStatusCheck<>("setmode", true, "Set the game mode.", context -> context.getData().has("basic.win_mode") || context.getData().has("basic.mode"))
+                );
+            }
+        };
+    }
+
 }

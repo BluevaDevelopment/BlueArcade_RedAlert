@@ -31,8 +31,8 @@ public class RedAlertMessagingService {
 
     public void sendDescription(GameContext<Player, Location, World, Material, ItemStack, Sound, Block, Entity> context,
                                 RedAlertMode mode) {
-        List<String> description = moduleConfig.getStringListFrom("language.yml", "description." + mode.getKey());
         for (Player player : context.getPlayers()) {
+            List<String> description = moduleConfig.getTranslationList(player, "description." + mode.getKey());
             for (String line : description) {
                 context.getMessagesAPI().sendRaw(player, line);
             }
@@ -48,11 +48,11 @@ public class RedAlertMessagingService {
 
             context.getSoundsAPI().play(player, coreConfig.getSound("sounds.starting_game.countdown"));
 
-            String title = coreConfig.getLanguage("titles.starting_game.title")
+            String title = coreConfig.getLanguage(player, "titles.starting_game.title")
                     .replace("{game_display_name}", moduleInfo.getName())
                     .replace("{time}", String.valueOf(secondsLeft));
 
-            String subtitle = coreConfig.getLanguage("titles.starting_game.subtitle")
+            String subtitle = coreConfig.getLanguage(player, "titles.starting_game.subtitle")
                     .replace("{game_display_name}", moduleInfo.getName())
                     .replace("{time}", String.valueOf(secondsLeft));
 
@@ -66,10 +66,10 @@ public class RedAlertMessagingService {
                 continue;
             }
 
-            String title = coreConfig.getLanguage("titles.game_started.title")
+            String title = coreConfig.getLanguage(player, "titles.game_started.title")
                     .replace("{game_display_name}", moduleInfo.getName());
 
-            String subtitle = coreConfig.getLanguage("titles.game_started.subtitle")
+            String subtitle = coreConfig.getLanguage(player, "titles.game_started.subtitle")
                     .replace("{game_display_name}", moduleInfo.getName());
 
             context.getTitlesAPI().sendRaw(player, title, subtitle, 0, 20, 20);
@@ -78,12 +78,11 @@ public class RedAlertMessagingService {
     }
 
     public void sendStartTitle(GameContext<Player, Location, World, Material, ItemStack, Sound, Block, Entity> context) {
-        String title = coreConfig.getLanguage("titles.game_started.title")
-                .replace("{game_display_name}", moduleInfo.getName());
-        String subtitle = coreConfig.getLanguage("titles.game_started.subtitle")
-                .replace("{game_display_name}", moduleInfo.getName());
-
         for (Player player : context.getPlayers()) {
+            String title = coreConfig.getLanguage(player, "titles.game_started.title")
+                    .replace("{game_display_name}", moduleInfo.getName());
+            String subtitle = coreConfig.getLanguage(player, "titles.game_started.subtitle")
+                    .replace("{game_display_name}", moduleInfo.getName());
             context.getTitlesAPI().sendRaw(player, title, subtitle, 0, 20, 10);
         }
     }
@@ -107,8 +106,8 @@ public class RedAlertMessagingService {
         }
     }
 
-    public String getModeDisplayName(RedAlertMode mode) {
-        return moduleConfig.getStringFrom("language.yml", "scoreboard.mode_labels." + mode.getKey(), mode.getDisplay());
+    public String getModeDisplayName(Player player, RedAlertMode mode) {
+        return moduleConfig.getTranslation(player, "scoreboard.mode_labels." + mode.getKey());
     }
 
     public String getScoreboardPath() {
@@ -120,7 +119,7 @@ public class RedAlertMessagingService {
     }
 
     private String getRandomMessage(String path) {
-        List<String> messages = moduleConfig.getStringListFrom("language.yml", path);
+        List<String> messages = moduleConfig.getTranslationList(null, path);
         if (messages == null || messages.isEmpty()) {
             return null;
         }
@@ -128,4 +127,10 @@ public class RedAlertMessagingService {
         int index = ThreadLocalRandom.current().nextInt(messages.size());
         return messages.get(index);
     }
+
+    private static String formatCountdownTime(int seconds) {
+        int safeSeconds = Math.max(0, seconds);
+        return String.format("%02d:%02d", safeSeconds / 60, safeSeconds % 60);
+    }
+
 }

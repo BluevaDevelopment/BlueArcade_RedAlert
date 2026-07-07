@@ -137,21 +137,20 @@ public class RedAlertGameManager {
                 endGameOnce(context, state);
                 return;
             }
-
-            String actionBarTemplate = coreConfig.getLanguage("action_bar.in_game.global");
             for (Player player : allPlayers) {
+                String actionBarTemplate = coreConfig.getLanguage(player, "action_bar.in_game.global");
                 if (!player.isOnline()) {
                     continue;
                 }
 
                 Map<String, String> customPlaceholders = getCustomPlaceholders(player);
-                customPlaceholders.put("time", String.valueOf(timeLeft[0]));
+                customPlaceholders.put("time", formatCountdownTime(timeLeft[0]));
                 customPlaceholders.put("alive", String.valueOf(alivePlayers.size()));
                 customPlaceholders.put("spectators", String.valueOf(context.getSpectators().size()));
 
                 if (actionBarTemplate != null) {
                     String actionBarMessage = actionBarTemplate
-                            .replace("{time}", String.valueOf(timeLeft[0]))
+                            .replace("{time}", formatCountdownTime(timeLeft[0]))
                             .replace("{round}", String.valueOf(context.getCurrentRound()))
                             .replace("{round_max}", String.valueOf(context.getMaxRounds()));
                     context.getMessagesAPI().sendActionBar(player, actionBarMessage);
@@ -231,9 +230,9 @@ public class RedAlertGameManager {
         }
 
         messagingService.sendDeathMessage(context, player);
-        context.eliminatePlayer(player, moduleConfig.getStringFrom("language.yml", "messages.eliminated"));
+        context.eliminatePlayer(player, moduleConfig.getTranslation(player, "messages.eliminated"));
         player.getInventory().clear();
-        player.setGameMode(GameMode.SPECTATOR);
+        context.setPlayerSpectating(player, true);
         context.getSoundsAPI().play(player, coreConfig.getSound("sounds.in_game.respawn"));
     }
 
@@ -259,7 +258,7 @@ public class RedAlertGameManager {
             placeholders.put("spectators", String.valueOf(context.getSpectators().size()));
             RedAlertArenaState state = arenaStates.get(context.getArenaId());
             RedAlertMode mode = state != null ? state.getMode() : RedAlertMode.CHAOS;
-            placeholders.put("mode", messagingService.getModeDisplayName(mode));
+            placeholders.put("mode", messagingService.getModeDisplayName(player, mode));
         }
 
         return placeholders;
@@ -311,4 +310,10 @@ public class RedAlertGameManager {
         String dataMode = context.getDataAccess().getGameData("basic.mode", String.class);
         return RedAlertMode.fromString(dataMode != null ? dataMode : "chaos");
     }
+
+    private static String formatCountdownTime(int seconds) {
+        int safeSeconds = Math.max(0, seconds);
+        return String.format("%02d:%02d", safeSeconds / 60, safeSeconds % 60);
+    }
+
 }

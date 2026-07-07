@@ -31,11 +31,11 @@ public class RedAlertStatsService {
         }
 
         statsAPI.registerModuleStat(moduleInfo.getId(),
-                new StatDefinition("wins", moduleConfig.getStringFrom("language.yml", "stats.labels.wins", "Wins"), moduleConfig.getStringFrom("language.yml", "stats.descriptions.wins", "Red Alert wins"), StatScope.MODULE));
+                new StatDefinition("wins", moduleConfig.getTranslation(null, "stats.labels.wins"), moduleConfig.getTranslation(null, "stats.descriptions.wins"), StatScope.MODULE));
         statsAPI.registerModuleStat(moduleInfo.getId(),
-                new StatDefinition("games_played", moduleConfig.getStringFrom("language.yml", "stats.labels.games_played", "Games Played"), moduleConfig.getStringFrom("language.yml", "stats.descriptions.games_played", "Red Alert games played"), StatScope.MODULE));
+                new StatDefinition("games_played", moduleConfig.getTranslation(null, "stats.labels.games_played"), moduleConfig.getTranslation(null, "stats.descriptions.games_played"), StatScope.MODULE));
         statsAPI.registerModuleStat(moduleInfo.getId(),
-                new StatDefinition("tiles_melted", moduleConfig.getStringFrom("language.yml", "stats.labels.tiles_melted", "Tiles melted"), moduleConfig.getStringFrom("language.yml", "stats.descriptions.tiles_melted", "Blocks heated or removed"), StatScope.MODULE));
+                new StatDefinition("tiles_melted", moduleConfig.getTranslation(null, "stats.labels.tiles_melted"), moduleConfig.getTranslation(null, "stats.descriptions.tiles_melted"), StatScope.MODULE));
     }
 
     public void resetArena(int arenaId) {
